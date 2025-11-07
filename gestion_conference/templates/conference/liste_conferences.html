@@ -1,26 +1,81 @@
-<h2>la liste des conference </h2>
-<table border="2" >
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f5f9ff; /* bleu clair */
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #0047ab;
+    }
+
+    a.button {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    a.button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    tr:nth-child(even) {
+        background-color: #eef3ff;
+    }
+
+    tr:hover {
+        background-color: #d9e7ff;
+    }
+</style>
+
+<h2>Liste des conférences</h2>
+<div style="text-align: center;">
+    <a href="{% url 'confrerence_add' %}" class="button">Add Conference</a>
+</div>
+
+<table>
     <tr>
-        <td>title</td>
-        <td>location</td>
-        <td>start_date</td>
-        <td>end_date</td>
-        <td>action</td>
-        
+        <th>Title</th>
+        <th>Location</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Actions</th>
     </tr>
 
-{% for c in liste %}
-<tr>
-    <td>{{c.name}}</td>
-    <td>{{c.location}}</td>
-    <td>{{c.start_date}}</td>
-    <td>{{c.end_date}}</td>
-    <td>
-       <a href="{%url 'conference_details' c.pk %}">View</a>
+    {% for c in liste %}
+    <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.location }}</td>
+        <td>{{ c.start_date }}</td>
+        <td>{{ c.end_date }}</td>
+        <td>
+            <a href="{% url 'conference_details' c.pk %}" class="button">View</a>
+            {% if user.is_authenticated and user.role == "commitee"%}
+                <a href="{% url 'conference_update' c.pk %}" class="button">Update</a>
+                <a href="{% url 'conference_delete' c.pk %}" class="button" style="background-color:red;">Delete</a>
 
-    </td>
-</tr>
-
-{% endfor %}
-
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
 </table>
+{% endblock %}

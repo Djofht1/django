@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Supprimer une conférence{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 80px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center;">
+    <h2 style="color: #0056b3; margin-bottom: 20px;">Suppression de conférence</h2>
+    <p style="font-size: 1.1em; color: #333; margin-bottom: 30px;">
+        Êtes-vous sûr de vouloir supprimer la conférence :  
+        <strong style="color:#0533ff;">"{{ object.name }}"</strong> ?
+    </p>
+
+    <form method="post" style="display: flex; justify-content: center; gap: 15px;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">🗑️ Supprimer</button>
+        <a href="{% url 'liste_conferences' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

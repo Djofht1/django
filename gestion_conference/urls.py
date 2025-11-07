@@ -20,6 +20,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('conference/',include('conferenceApp.urls')),
-
+    path('user/',include('UserApp.urls'))
     
 ]

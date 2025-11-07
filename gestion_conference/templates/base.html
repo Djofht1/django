@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gestion des conférences{% endblock %}</title>
+    <style>
+        /* ======== GLOBAL STYLE ======== */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f8ff;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            margin-top: 20px;
+        }
+
+        /* ======== NAVIGATION BAR ======== */
+        nav {
+            background-color: #007bff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            padding: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ======== MAIN CONTENT ======== */
+        .content {
+            max-width: 900px;
+            background: white;
+            margin: 40px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* ======== FOOTER ======== */
+        footer {
+            background-color: #0056b3;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.9em;
+            margin-top: 60px;
+        }
+
+        /* ======== BUTTONS ======== */
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #565e64;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #b02a37;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Bienvenue à la gestion des conférences</h1>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="{% url 'liste_conferences' %}">Conférences</a>
+        {% if user.is_authenticated %}
+            <a>{{user.username}}</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+        
+    </nav>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>2025-2026 — Workshop Django</p>
+    </footer>
+
+    <hr>
+</body>
+</html>
