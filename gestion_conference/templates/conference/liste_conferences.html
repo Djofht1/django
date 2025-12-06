@@ -10,6 +10,7 @@
     h2 {
         text-align: center;
         color: #0047ab;
+        margin-top: 20px;
     }
 
     a.button {
@@ -20,6 +21,7 @@
         text-decoration: none;
         margin: 5px;
         display: inline-block;
+        transition: background-color 0.3s ease;
     }
 
     a.button:hover {
@@ -30,12 +32,19 @@
         width: 90%;
         margin: 20px auto;
         border-collapse: collapse;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background-color: white;
     }
 
     th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
+        border: 1px solid #ddd;
+        padding: 12px;
         text-align: center;
+    }
+
+    th {
+        background-color: #0047ab;
+        color: white;
     }
 
     tr:nth-child(even) {
@@ -45,11 +54,18 @@
     tr:hover {
         background-color: #d9e7ff;
     }
+
+    .center {
+        text-align: center;
+    }
 </style>
 
 <h2>Liste des conférences</h2>
-<div style="text-align: center;">
-    <a href="{% url 'confrerence_add' %}" class="button">Add Conference</a>
+
+<div class="center">
+    {% if user.is_authenticated and user.role == "commitee" %}
+        <a href="{% url 'confrerence_add' %}" class="button">Add Conference</a>
+    {% endif %}
 </div>
 
 <table>
@@ -68,13 +84,32 @@
         <td>{{ c.start_date }}</td>
         <td>{{ c.end_date }}</td>
         <td>
+            <!-- Bouton pour consulter les détails -->
             <a href="{% url 'conference_details' c.pk %}" class="button">View</a>
-            {% if user.is_authenticated and user.role == "commitee"%}
-                <a href="{% url 'conference_update' c.pk %}" class="button">Update</a>
-                <a href="{% url 'conference_delete' c.pk %}" class="button" style="background-color:red;">Delete</a>
 
+            <!-- Si utilisateur connecté -->
+            {% if user.is_authenticated %}
+                <!-- Si c'est un membre du comité -->
+                {% if user.role == "commitee" %}
+                    <a href="{% url 'conference_update' c.pk %}" class="button">Update</a>
+                    <a href="{% url 'conference_delete' c.pk %}" class="button" style="background-color:red;">Delete</a>
+                {% else %}
+                    <!-- Sinon, simple utilisateur (auteur) -->
+                    <a href="{% url 'submission_add' c.pk %}" class="button" style="background-color:green;">
+                        Soumettre un papier
+                    </a>
+                {% endif %}
+            {% else %}
+                <!-- Utilisateur non connecté -->
+                <a href="/user/login/" class="button" style="background-color:gray;">
+                    Connectez-vous pour soumettre
+                </a>
             {% endif %}
         </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">Aucune conférence disponible pour le moment.</td>
     </tr>
     {% endfor %}
 </table>

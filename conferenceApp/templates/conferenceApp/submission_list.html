@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Mes soumissions</h2>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Statut</th>
+            <th>Auteur</th>
+            <th>Conférence</th>
+            <th>Date de soumission</th>
+            <th>Paiement</th>
+            <th>Détails</th>
+            <th>Modifier</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in submissions %}
+        <tr>
+            <td>{{ s.title }}</td>
+            <td>{{ s.status|capfirst }}</td>
+            <td>{{ s.user.username }}</td>
+            <td>{{ s.conference.name }}</td>
+            <td>{{ s.submission_date|date:"Y-m-d" }}</td>
+            <td>{% if s.payed %}✅ Payé{% else %}❌ Non payé{% endif %}</td>
+            <td>
+                <a href="{% url 'detail_submission' s.submission_id %}">Détails</a>
+            </td>
+            <td>
+                {% if s.status != "accepted" and s.status != "rejected" %}
+                    <a href="{% url 'submission_update' s.submission_id %}">Modifier</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">Aucune soumission trouvée.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'submission_add' %}" class="btn btn-primary mt-2">Ajouter une nouvelle soumission</a>
+{% endblock %}

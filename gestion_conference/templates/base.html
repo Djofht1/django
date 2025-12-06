@@ -118,9 +118,11 @@
         {% if user.is_authenticated %}
             <a>{{user.username}}</a>
             <a href="{% url 'logout' %}">Logout</a>
+             <a href="{% url 'list_submissions' %}">Mes soumissions</a>
         {% else %}
             <a href="{% url 'login' %}">Login</a>
             <a href="{% url 'register' %}">Register</a>
+            
         {% endif %}
         
     </nav>

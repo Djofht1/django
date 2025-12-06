@@ -2,7 +2,7 @@ from django import forms
 from .models import conference
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
+from .models import submission
 class ConferenceModel(forms.ModelForm):
     class Meta:
         model=conference
@@ -20,5 +20,12 @@ class ConferenceModel(forms.ModelForm):
             'end_date':forms.DateInput(attrs={'placeholder':'date fin','type':'date'}),
             
         }
+class SubmissionForm(forms.ModelForm):
+    class Meta:
+        model = submission
+        fields = ['title', 'abstract', 'keywords', 'paper', 'status', 'payed']
 
-
+class SubmissionUpdateForm(forms.ModelForm):
+    class Meta:
+        model = submission
+        fields = ['title', 'abstract', 'keywords', 'paper', 'status', 'payed']

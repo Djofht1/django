@@ -53,33 +53,31 @@ class conference(models.Model):
             return delta.days
         return 0 
 class submission(models.Model):
-    submission_id=models.CharField( primary_key=True,
-        max_length=255,
-        validators=[
-            RegexValidator(
-                regex=r'^\d+$',  # seulement des chiffres
-                message="L'identifiant de la soumission doit être un nombre."
-            )
-        ])
-    user=models.ForeignKey("UserApp.User",on_delete=models.CASCADE,related_name="submission")
-    conference=models.ForeignKey("conferenceApp.conference",on_delete=models.CASCADE,related_name="submission")
-    title=models.CharField(max_length=255)
-    abstract=models.TextField()
-    keywords=models.TextField()
-    paper=models.FileField(
-        upload_to="paper/" ,validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+    submission_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey("UserApp.User", on_delete=models.CASCADE, related_name="submission")
+    conference = models.ForeignKey("conferenceApp.conference", on_delete=models.CASCADE, related_name="submission")
+    title = models.CharField(max_length=255)
+    abstract = models.TextField()
+    keywords = models.TextField()
+    paper = models.FileField(
+        upload_to="paper/",
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
         help_text="Le fichier doit être au format PDF uniquement."
     )
-    CHOICES=[("submitted","submitted"),
-             ("under review","under review"),
-             ("accepted","accepted"),
-             ("rejected","rejected")
-             ]
-    status=models.CharField(max_length=255,choices=CHOICES )
-    payed=models.BooleanField(default=False)
-    submission_date=models.DateField(auto_now_add=True)
-    created_at=models.DateTimeField(auto_now_add=True)
-    update_at=models.DateTimeField(auto_now=True)
+    CHOICES = [
+        ("submitted", "submitted"),
+        ("under review", "under review"),
+        ("accepted", "accepted"),
+        ("rejected", "rejected")
+    ]
+    status = models.CharField(max_length=255, choices=CHOICES)
+    payed = models.BooleanField(default=False)
+    submission_date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.user.username})"
 
 
 

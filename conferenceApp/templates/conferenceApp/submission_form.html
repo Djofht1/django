@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+        background-color: #f5f9ff;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #0047ab;
+        margin-top: 20px;
+    }
+
+    .form-container {
+        width: 60%;
+        margin: 30px auto;
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #0047ab;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        border: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<div class="form-container">
+    <h2>
+        {% if form.instance.pk %}Modifier la soumission{% else %}Nouvelle Soumission{% endif %}
+    </h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            {% if field.name != 'conference' %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success">
+            {% if form.instance.pk %}Modifier{% else %}Soumettre{% endif %}
+        </button>
+        <a href="{% url 'list_submissions' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}
